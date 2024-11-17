@@ -1,32 +1,40 @@
 import json
 import requests
 
+from src.data_sources.transformation import Transformation
+
 class DataSource:
-    def __init__(self, config_file="../configs/suppliers.config.json"):
+    def __init__(self, config_file="src/configs/suppliers.config.json"):
         with open(config_file) as f:
             self.config = json.load(f)
 
-        print(self.config)
+        # print(self.config)
+        print("Data source initialized.")
 
-    def fetch_data(self, supplier_name: str) -> list:
-        supplier_config = self.config.get(supplier_name)
+    def fetch_url(self, url):
+        # response = requests.get(url)
+        # return response.json()
+
+        # url is the path to a json file (temporary)
+        with open(url) as f:
+            return json.load(f)
+
+    def fetch_data(self, supplier_name: str, transformer: Transformation) -> list:
+        supplier_config = next((supplier for supplier in self.config["suppliers"] if supplier["name"] == supplier_name), None)
         if not supplier_config:
             raise ValueError(f"Supplier {supplier_name} is not defined in configuration.")
-
+        
         url = supplier_config['url']
-        field_mappings = supplier_config.get('field_mappings', {})
-        transform_function = supplier_config.get('transform_function')
+        field_mappings = { 'config': supplier_config.get('config', {}) }
+        
+        response = self.fetch_url(url)
+        data = response
+        # print(f"Data: {data}")
+        # print(f"Field mappings: {field_mappings}")
 
-        # Fetch data from supplier
-        response = requests.get(url)
-        data = response.json()
+        transformed_data = transformer.transform_json_with_config(data, field_mappings)
 
-        # Apply field mappings and transformations
-        standardized_data = self._apply_mappings(data, field_mappings)
-        if transform_function:
-            standardized_data = getattr(self, transform_function)(standardized_data)
-
-        return standardized_data
+        return transformed_data
 
     def _apply_mappings(self, data: list, mappings: dict) -> list:
         return [
@@ -39,4 +47,8 @@ class DataSource:
 
 if __name__ == "__main__":
     ds = DataSource()
+    transformer = Transformation()
+    res = ds.fetch_data("sample/sample2.json", transformer)
+    print(json.dumps(res, indent=2))
+    
     

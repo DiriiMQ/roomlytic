@@ -1,12 +1,14 @@
 def lowercase_transform(value, config):
-    return value.lower()
+    return [v.lower() for v in value]
 
 def map_transform(value, config):
     mapping = config["mapping"]
-    print(value)
-    print(config)
+    # print(value)
+    # print(config)
+    # print(mapping)
     return [
-        {target_key: value.get(source_key, None) for target_key, source_key in mapping.items()}
+        {target_key: v.get(source_key, None) for target_key, source_key in mapping.items()}
+        for v in value
     ]
 
 def default_transform(value, config):

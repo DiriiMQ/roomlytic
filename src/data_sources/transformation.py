@@ -1,4 +1,5 @@
-from transformation_strategies import default_transform, map_transform, lowercase_transform, template_transform
+from .transformation_strategies import default_transform, map_transform, lowercase_transform, template_transform
+
 import json
 
 class Transformation:
@@ -40,7 +41,7 @@ class Transformation:
                         transform_type = source_field.get("transform")
                         if transform_type:
                             transform_func = globals().get(f"{transform_type}_transform")
-                            print(transform_func)
+                            # print(transform_func)
                             if transform_func:
                                 value = transform_func(source_value, source_field)
                             else:

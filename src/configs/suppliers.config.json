@@ -1,7 +1,7 @@
 {
     "suppliers": [
         {
-            "name": "Supplier 1",
+            "name": "sample/sample4.json",
             "url": "sample/sample4.json",
             "config": {
                 "id": "Id",
@@ -42,8 +42,52 @@
             }
         },
         {
-            "name": "Supplier 2",
-            "url": "http://supplier2.com"
+            "name": "sample/sample2.json",
+            "url": "sample/sample2.json",
+            "config": {
+              "id": "id",
+              "destination_id": "destination",
+              "name": "name",
+              "location.lat": "lat",
+              "location.lng": "lng",
+              "location.address": "address",
+              "location.city": {
+                "default": ""
+              },
+              "location.country": {
+                "default": ""
+              },
+              "description": "info",
+              "amenities.general": {
+                "default": []
+              },
+              "amenities.room": {
+                "source": "amenities",
+                "transform": "lowercase"
+              },
+              "images.rooms": {
+                "source": "images.rooms",
+                "transform": "map",
+                "mapping": {
+                  "link": "url",
+                  "description": "description"
+                }
+              },
+              "images.site": {
+                "default": []
+              },
+              "images.amenities": {
+                "source": "images.amenities",
+                "transform": "map",
+                "mapping": {
+                  "link": "url",
+                  "description": "description"
+                }
+              },
+              "booking_conditions": {
+                "default": ["Booking conditions not provided."]
+              }
+            }
         }
     ]
 }
