@@ -1,0 +1,21 @@
+[
+    {
+      "Id": "iJhz",
+      "DestinationId": 5432,
+      "Name": "Beach Villas Singapore",
+      "Latitude": 1.264751,
+      "Longitude": 103.824006,
+      "Address": " 8 Sentosa Gateway, Beach Villas ",
+      "City": "Singapore",
+      "Country": "SG",
+      "PostalCode": "098269",
+      "Description": "  This 5 star hotel is located on the coastline of Singapore.",
+      "Facilities": [
+        "Pool",
+        "BusinessCenter",
+        "WiFi ",
+        "DryCleaning",
+        " Breakfast"
+      ]
+    }
+]
