@@ -1,5 +1,6 @@
 from src.formatter.merge_strategies.hotel_merge_strategy import HotelMergeStrategy
 from src.models.hotel_data_model import Hotel, Location, Amenities, Images, Image
+from src.utils.helper_functions import get_longer_str
 
 from typing import List
 
@@ -13,10 +14,8 @@ class DefaultHotelMergeStrategy(HotelMergeStrategy):
 
         for hotel in hotels[1:]:
             # Merge fields with prioritization logic
-            merged_hotel.name = hotel.name or merged_hotel.name
-            merged_hotel.description = (
-                hotel.description if hotel.description and (not merged_hotel.description or len(hotel.description) > len(merged_hotel.description)) else merged_hotel.description
-            )
+            merged_hotel.name = get_longer_str(merged_hotel.name, hotel.name)
+            merged_hotel.description = get_longer_str(merged_hotel.description, hotel.description)
             merged_hotel.location = self.merge_location(merged_hotel.location, hotel.location)
             merged_hotel.amenities = self.merge_amenities(merged_hotel.amenities, hotel.amenities)
             merged_hotel.images = self.merge_images(merged_hotel.images, hotel.images)
@@ -29,9 +28,9 @@ class DefaultHotelMergeStrategy(HotelMergeStrategy):
         return Location(
             lat=loc2.lat or loc1.lat,
             lng=loc2.lng or loc1.lng,
-            address=loc2.address or loc1.address,
-            city=loc2.city or loc1.city,
-            country=loc2.country or loc1.country,
+            address=get_longer_str(loc1.address, loc2.address),
+            city=get_longer_str(loc1.city, loc2.city),
+            country=get_longer_str(loc1.country, loc2.country),
         )
 
     def merge_amenities(self, am1: Amenities, am2: Amenities) -> Amenities:

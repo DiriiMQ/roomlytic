@@ -1,4 +1,5 @@
-from .transformation_strategies import default_transform, map_transform, lowercase_transform, template_transform
+from .transform_factory import TransformationFactory
+from .transformation_strategies import TemplateTransformation, DefaultTransformation
 
 import json
 
@@ -32,20 +33,17 @@ class Transformation:
                 elif isinstance(source_field, dict):
                     # Handle templates, defaults, or transformations
                     if "template" in source_field:
-                        value = template_transform(item, source_field)
+                        value = TemplateTransformation().transform(item, source_field)
                     elif "default" in source_field:
-                        value = default_transform(item, source_field)
+                        value = DefaultTransformation().transform(item, source_field)
                     elif "source" in source_field:
                         source_value = self.get_nested_value(item, source_field["source"])
                         
                         transform_type = source_field.get("transform")
                         if transform_type:
-                            transform_func = globals().get(f"{transform_type}_transform")
-                            # print(transform_func)
-                            if transform_func:
-                                value = transform_func(source_value, source_field)
-                            else:
-                                value = source_value
+                            strategy = TransformationFactory.get_transformation(transform_type)()
+                            # print(strategy)
+                            value = strategy.transform(source_value, source_field)
                         else:
                             value = source_value
 

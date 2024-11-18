@@ -43,7 +43,7 @@
         },
         {
             "name": "sample/sample2.json",
-            "url": "sample/sample2.json",
+            "url": "https://5f2be0b4ffc88500167b85a0.mockapi.io/suppliers/patagonia",
             "config": {
               "id": "id",
               "destination_id": "destination",

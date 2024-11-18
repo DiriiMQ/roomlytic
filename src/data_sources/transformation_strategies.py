@@ -1,18 +1,30 @@
-def lowercase_transform(value, config):
-    return [v.lower() for v in value]
+class TransformationStrategy:
+    def transform(self, value, config):
+        raise NotImplementedError("Transform method not implemented")
 
-def map_transform(value, config):
-    mapping = config["mapping"]
-    # print(value)
-    # print(config)
-    # print(mapping)
-    return [
-        {target_key: v.get(source_key, None) for target_key, source_key in mapping.items()}
-        for v in value
-    ]
+class LowercaseTransformation(TransformationStrategy):
+    def transform(self, value, config):
+        if value is None:
+            return []
+        return [v.lower() for v in value]
 
-def default_transform(value, config):
-    return config["default"]
+class MapTransformation(TransformationStrategy):
+    def transform(self, value, config):
+        if value is None:
+            return []
+        
+        mapping = config["mapping"]
+        return [
+            {target_key: v.get(source_key, None) for target_key, source_key in mapping.items()}
+            for v in value
+        ]
 
-def template_transform(value, config):
-    return config["template"].format(**value)
+class DefaultTransformation(TransformationStrategy):
+    def transform(self, value, config):
+        return config["default"]
+
+class TemplateTransformation(TransformationStrategy):
+    def transform(self, value, config):
+        if value is None:
+            return ""
+        return config["template"].format(**value)

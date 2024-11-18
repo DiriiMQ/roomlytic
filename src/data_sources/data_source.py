@@ -15,10 +15,13 @@ class DataSource:
     def fetch_url(self, url):
         # response = requests.get(url)
         # return response.json()
-
+        if url.startswith("http"):
+            response = requests.get(url)
+            return response.json()
         # url is the path to a json file (temporary)
-        with open(url) as f:
-            return json.load(f)
+        else:
+            with open(url) as f:
+                return json.load(f)
 
     def fetch_data(self, supplier_name: str, transformer: Transformation) -> list:
         supplier_config = next((supplier for supplier in self.config["suppliers"] if supplier["name"] == supplier_name), None)

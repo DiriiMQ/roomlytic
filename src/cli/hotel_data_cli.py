@@ -24,7 +24,7 @@ class HotelDataCLI:
         self.suppliers = self.aggregator.aggregate_data()
         # cleaned_data = [self.cleaner.clean(hotel) for hotel in suppliers]
         
-        # print(json.dumps(formatted_data, indent=2))
+        # print(json.dumps(self.suppliers, indent=2))
 
         # for supplier in self.suppliers:
         #     print(json.dumps(supplier._export_dict(), indent=2))
