@@ -15,7 +15,7 @@ class HotelDataAggregator:
 
         self.init(config_file=config_file)
 
-        print(self.suppliers)
+        # print(self.suppliers)
 
     def init(self, config_file):
         with open(config_file) as f:
@@ -25,14 +25,13 @@ class HotelDataAggregator:
     def get_all_suppliers(self) -> list[str]:
         return [supplier["name"] for supplier in self.config["suppliers"]]
 
-    def aggregate_data(self) -> list:
+    def aggregate_data(self) -> list[Supplier]:
         self.all_data = []
         for supplier in self.suppliers:
             transformed_data = self.data_source.fetch_data(supplier, transformer=self.transformer)
             supplier_data = Supplier(supplier, transformed_data)
             self.all_data.append(supplier_data)
         
-
         return self.merge_data(self.all_data)
 
     def merge_data(self, data: list) -> list:

@@ -1,1 +1,33 @@
 #!/bin/sh
+
+# Function to display help message
+show_help() {
+    echo "Usage: $0 hotel_id_1,hotel_id_2,hotel_id_3 destination_id_1,destination_id_2"
+    echo
+    echo "Arguments:"
+    echo "  hotel_ids         Comma-separated list of hotel IDs"
+    echo "  destination_ids   Comma-separated list of destination IDs"
+    echo
+    echo "Options:"
+    echo "  --help            Show this help message and exit"
+}
+
+# Check if --help is provided
+if [ "$1" = "--help" ]; then
+    show_help
+    exit 0
+fi
+
+# Check if the correct number of arguments is provided
+if [ "$#" -ne 2 ]; then
+    echo "Error: Incorrect number of arguments."
+    show_help
+    exit 1
+fi
+
+# Assign arguments to variables
+HOTEL_IDS=$1
+DESTINATION_IDS=$2
+
+# Run the Python script with the provided arguments
+python3 main.py "$HOTEL_IDS" "$DESTINATION_IDS"

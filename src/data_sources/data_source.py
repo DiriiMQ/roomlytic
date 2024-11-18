@@ -10,7 +10,7 @@ class DataSource:
             self.config = json.load(f)
 
         # print(self.config)
-        print("Data source initialized.")
+        # print("Data source initialized.")
 
     def fetch_url(self, url):
         # response = requests.get(url)
