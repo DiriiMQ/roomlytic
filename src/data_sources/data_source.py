@@ -2,6 +2,7 @@ import json
 import requests
 
 from src.data_sources.transformation import Transformation
+from src.models.hotel_data_model import Hotel
 
 class DataSource:
     def __init__(self, config_file="src/configs/suppliers.config.json"):
@@ -34,7 +35,16 @@ class DataSource:
 
         transformed_data = transformer.transform_json_with_config(data, field_mappings)
 
-        return transformed_data
+        hotels = []
+
+        for item in transformed_data:
+            hotel = Hotel()
+            hotel._import(item)
+            hotels.append(hotel)
+
+        # print(f"Transformed data: {transformed_data}")
+
+        return hotels
 
     def _apply_mappings(self, data: list, mappings: dict) -> list:
         return [

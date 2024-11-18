@@ -6,12 +6,15 @@ import json
 
 class HotelDataCLI:
     def __init__(self):
-        self.aggregator = HotelDataAggregator([AcmeDataSource(), PatagoniaDataSource(), PaperfliesDataSource()])
+        self.aggregator = HotelDataAggregator()
         self.cleaner = HotelDataCleaner()
         self.formatter = HotelDataFormatter()
 
     def run(self, hotel_ids: str, destination_ids: str):
-        data = self.aggregator.aggregate_data()
-        cleaned_data = [self.cleaner.clean(hotel) for hotel in data]
-        formatted_data = self.formatter.filter_and_format(cleaned_data, hotel_ids, destination_ids)
-        print(json.dumps(formatted_data, indent=2))
+        suppliers = self.aggregator.aggregate_data()
+        # cleaned_data = [self.cleaner.clean(hotel) for hotel in suppliers]
+        # formatted_data = self.formatter.filter_and_format(cleaned_data, hotel_ids, destination_ids)
+        # print(json.dumps(formatted_data, indent=2))
+
+        for supplier in suppliers:
+            print(json.dumps(supplier._export_dict(), indent=2))
