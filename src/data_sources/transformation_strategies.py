@@ -1,3 +1,5 @@
+from src.utils.helper_functions import add_spaces_to_camel_case, CAMEL_WORD_WHITE_LIST
+
 class TransformationStrategy:
     def transform(self, value, config):
         raise NotImplementedError("Transform method not implemented")
@@ -6,6 +8,9 @@ class LowercaseTransformation(TransformationStrategy):
     def transform(self, value, config):
         if value is None:
             return []
+        
+        value = [add_spaces_to_camel_case(v) if v.strip().lower() not in CAMEL_WORD_WHITE_LIST else v for v in value]
+
         return [v.lower() for v in value]
 
 class MapTransformation(TransformationStrategy):

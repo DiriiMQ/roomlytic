@@ -16,7 +16,7 @@ class HotelDataFormatter:
             # print(f"Supplier: {supplier.name}")
             # print(f"Total hotels: {len(supplier.hotels)}")
             for hotel in supplier.hotels:
-                if hotel.id in hotel_ids and hotel.destination_id in destination_ids:
+                if (hotel_ids[0] == 'none' or hotel.id in hotel_ids) and (destination_ids[0] == 'none' or hotel.destination_id in destination_ids):
                     if hotel.id not in hotel_ids_filter:
                         hotel_ids_filter[hotel.id] = [hotel]
                     else:

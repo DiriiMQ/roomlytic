@@ -37,9 +37,45 @@
                   "default": []
                 },
                 "booking_conditions": {
-                  "default": ["Booking conditions not provided."]
+                  "default": []
                 }
             }
+        },
+        {
+            "name": "sample/sample1.json",
+            "url": "https://5f2be0b4ffc88500167b85a0.mockapi.io/suppliers/acme",
+            "config": {
+              "id": "Id",
+              "destination_id": "DestinationId",
+              "name": "Name",
+              "location.lat": "Latitude",
+              "location.lng": "Longitude",
+              "location.address": {
+                "template": "{Address}, {PostalCode}"
+              },
+              "location.city": "City",
+              "location.country": "Country",
+              "description": "Description",
+              "amenities.general": {
+                "source": "Facilities",
+                "transform": "lowercase"
+              },
+              "amenities.room": {
+                "default": []
+              },
+              "images.rooms": {
+                "default": []
+              },
+              "images.site": {
+                "default": []
+              },
+              "images.amenities": {
+                "default": []
+              },
+              "booking_conditions": {
+                "default": []
+              }
+            }          
         },
         {
             "name": "sample/sample2.json",
@@ -85,9 +121,52 @@
                 }
               },
               "booking_conditions": {
-                "default": ["Booking conditions not provided."]
+                "default": []
               }
             }
+        },
+        {
+          "name": "sample/sample3.json",
+          "url": "https://5f2be0b4ffc88500167b85a0.mockapi.io/suppliers/paperflies",
+          "config": {
+            "id": "hotel_id",
+            "destination_id": "destination_id",
+            "name": "hotel_name",
+            "location.lat": {
+              "default": null
+            },
+            "location.lng": {
+              "default": null
+            },
+            "location.address": "location.address",
+            "location.city": {
+              "default": null
+            },
+            "location.country": "location.country",
+            "description": "details",
+            "amenities.general": "amenities.general",
+            "amenities.room": "amenities.room",
+            "images.rooms": {
+              "source": "images.rooms",
+              "transform": "map",
+              "mapping": {
+                "link": "link",
+                "description": "caption"
+              }
+            },
+            "images.site": {
+              "source": "images.site",
+              "transform": "map",
+              "mapping": {
+                "link": "link",
+                "description": "caption"
+              }
+            },
+            "images.amenities": {
+              "default": []
+            },
+            "booking_conditions": "booking_conditions"
+          }        
         }
     ]
 }

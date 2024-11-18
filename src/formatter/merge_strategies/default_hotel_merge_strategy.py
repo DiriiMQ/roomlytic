@@ -1,6 +1,6 @@
 from src.formatter.merge_strategies.hotel_merge_strategy import HotelMergeStrategy
 from src.models.hotel_data_model import Hotel, Location, Amenities, Images, Image
-from src.utils.helper_functions import get_longer_str
+from src.utils.helper_functions import get_longer_str, filter_more_general_term
 
 from typing import List
 
@@ -40,8 +40,16 @@ class DefaultHotelMergeStrategy(HotelMergeStrategy):
             room=list(set(am1.room + am2.room)),
         )
 
+        # Filter spaced amenities like "bath tub" and "bathtub"
+        am.general = [a for a in am.general if a.replace(" ", "") not in am.room]
+        am.room = [a for a in am.room if a.replace(" ", "") not in am.general]
+
+        # Filter sub amenities like "pool" and "indoor pool" -> keep the shorter one as it's more general
+        am.general = filter_more_general_term(am.general)
+        am.room = filter_more_general_term(am.room)
+
         # Remove duplicated amenities in room from general
-        am.general = [a for a in am.general if a not in am.room]
+        am.general = [a for a in am.general if a.replace(" ", "") not in am.room]
 
         return am
 

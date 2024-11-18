@@ -22,7 +22,7 @@ class HotelDataCLI:
 
     def run(self, hotel_ids: list[str], destination_ids: list[str]) -> list[Hotel]:
         self.suppliers = self.aggregator.aggregate_data()
-        # cleaned_data = [self.cleaner.clean(hotel) for hotel in suppliers]
+        self.suppliers = self.cleaner.clean_all_suppliers(self.suppliers)
         
         # print(json.dumps(self.suppliers, indent=2))
 
