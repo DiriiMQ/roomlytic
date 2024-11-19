@@ -22,14 +22,14 @@ class HotelDataAggregator:
             self.config = json.load(f)
         self.suppliers = self.get_all_suppliers()
 
-    def get_all_suppliers(self) -> list[str]:
-        return [supplier["name"] for supplier in self.config["suppliers"]]
+    def get_all_suppliers(self) -> list[(str, str)]:
+        return [(supplier["name"], supplier["url"]) for supplier in self.config["suppliers"]]
 
     def aggregate_data(self) -> list[Supplier]:
         self.all_data = []
-        for supplier in self.suppliers:
+        for supplier, url in self.suppliers:
             transformed_data = self.data_source.fetch_data(supplier, transformer=self.transformer)
-            supplier_data = Supplier(supplier, transformed_data)
+            supplier_data = Supplier(supplier, url, transformed_data)
             self.all_data.append(supplier_data)
         
         return self.merge_data(self.all_data)

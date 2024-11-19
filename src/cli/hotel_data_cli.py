@@ -2,8 +2,9 @@ from src.aggregator.hotel_data_aggregator import HotelDataAggregator
 from src.cleaner.hotel_data_cleaner import HotelDataCleaner
 from src.formatter.hotel_data_formatter import HotelDataFormatter
 from src.models.hotel_data_model import Hotel
+from src.utils.helper_functions import save_to_file
 
-import json
+import json, time
 
 class HotelDataCLI:
     def __init__(self):
@@ -23,6 +24,11 @@ class HotelDataCLI:
     def run(self, hotel_ids: list[str], destination_ids: list[str]) -> list[Hotel]:
         self.suppliers = self.aggregator.aggregate_data()
         self.suppliers = self.cleaner.clean_all_suppliers(self.suppliers)
+
+        save_to_file(
+            [supplier._export_dict() for supplier in self.suppliers], 
+            f'output/suppliers_{time.strftime("%Y%m%d_%H%M%S")}.json'
+        )
         
         # print(json.dumps(self.suppliers, indent=2))
 

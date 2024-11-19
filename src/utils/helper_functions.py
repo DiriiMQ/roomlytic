@@ -1,9 +1,16 @@
 from textacy import preprocessing
-import re
+import re, json
 
 CAMEL_WORD_WHITE_LIST = [
     "wifi"
 ]
+
+def save_to_file(data: list[dict], file_path: str):
+    try:
+        with open(file_path, 'w') as f:
+            json.dump(data, f, indent=4)
+    except Exception as e:
+        print(f"Error saving data to file: {e}")
 
 def add_spaces_to_camel_case(text):
     # Add a space before any uppercase letter that is not at the start of the string

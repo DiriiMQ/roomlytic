@@ -5,15 +5,18 @@ from src.models.hotel_data_model import Hotel
 @dataclass
 class Supplier:
     name: str = ""
+    url: str = ""
     hotels: List[Hotel] = field(default_factory=list)
 
     def _import(self, data: dict):
         self.name = data.get("name", "")
+        self.url = data.get("url", "")
         self.hotels = [Hotel(**hotel_data) for hotel_data in data.get("hotels", [])]
 
     def _export_dict(self):
         return {
             "name": self.name,
+            "url": self.url,
             "hotels": [hotel.to_dict() for hotel in self.hotels]
         }
 
