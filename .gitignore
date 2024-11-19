@@ -172,3 +172,6 @@ tmp/
 
 # ignore all __init__.py files
 **/__init__.py
+
+# ignore backup folder
+backup/
