@@ -163,3 +163,12 @@ cython_debug/
 
 test.py
 test.json
+
+# tmp folder
+tmp/
+
+# output folder
+# output/
+
+# ignore all __init__.py files
+**/__init__.py

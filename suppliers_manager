@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Function to display help message
+show_help() {
+    echo "Usage: $0 [--add-supplier path/to/new_supplier.json | --remove-supplier]"
+    echo
+    echo "Options:"
+    echo "  --add-supplier path/to/new_supplier.json  Add a new supplier from a JSON file"
+    echo "  --remove-supplier                        Remove an existing supplier"
+    echo "  --help                                   Show this help message and exit"
+}
+
+# Check if --help is provided
+if [ "$1" = "--help" ]; then
+    show_help
+    exit 0
+fi
+
+# Check if the correct arguments are provided
+if [ "$#" -eq 0 ]; then
+    echo "Error: No arguments provided."
+    show_help
+    exit 1
+fi
+
+# Run the Python script with the provided arguments
+python3 src/utils/suppliers_manager.py "$@"

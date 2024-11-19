@@ -126,9 +126,37 @@ if __name__ == "__main__":
         "booking_conditions": ["non-refundable", "free cancellation"]
     }
 
+    hotel_data1 = {
+        "id": "1231",
+        "destination_id": 4561,
+        "name": "Hotel A1",
+        "location": {
+            "lat": 40.71281,
+            "lng": -74.00601,
+            "address": "123 1Main St",
+            "city": "New York1",
+            "country": "USA1"
+        },
+        "description": "A lo1vely hotel in the heart of New York City",
+        "amenities": {
+            "general": ["wifi1", "breakfast"],
+            "room": ["tv", "mi1nibar"]
+        },
+        "images": {
+            "rooms": [{"link": "1room1.jpg", "description": "Room 1"}],
+            "site": [{"link": "site11.jpg", "description": "Site 1"}],
+            "amenities": [{"link": "p1ool.jpg", "description": "Pool"}]
+        },
+        "booking_conditions": []
+    }
+
+
     hotel = Hotel()
     hotel._import(hotel_data)
+    hotel1 = Hotel()
+    hotel1._import(hotel_data1)
     print(json.dumps(hotel._export_dict(), indent=2))
+    print(json.dumps(hotel1._export_dict(), indent=2))
     # {
     #     "id": "123",
     #     "destination_id": 456,
