@@ -32,6 +32,13 @@ chmod +x runner
 
 To add new supplier, you can use script `supplier_manager`. Type `./supplier_manager --help` for more information. (This is a temporary solution, and the final version would have a config generator to automatical add new suppliers and its configurations)
 
+Example:
+```bash
+./runner none none
+```
+
+The sample output is [here](sample/output.json).
+
 ## Application Structure
 
 ### Classes diagram
