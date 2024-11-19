@@ -1,4 +1,10 @@
-# roomlytic - A console application to collect and analyze hotel data from multiple suppliers
+<div align="center">
+
+# roomlytic
+
+A console application to collect and analyze hotel data from multiple suppliers
+
+</div>
 
 ## Pre-requisites
 - Python 3.10 (**not compatible** with Python 3.11+) and pip installed.
