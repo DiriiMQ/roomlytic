@@ -1,6 +1,47 @@
 {
     "suppliers": [
         {
+            "name": "sample/sample4.json",
+            "url": "sample/sample4.json",
+            "config": {
+                "id": "Id",
+                "destination_id": "DestinationId",
+                "name": "Name",
+                "location.lat": "Latitude",
+                "location.lng": "Longitude",
+                "location.address": {
+                  "template": "{Address}, {PostalCode}"
+                },
+                "location.city": "City",
+                "location.country": "Country",
+                "description": "Description",
+                "amenities.general": {
+                  "source": "Facilities",
+                  "transform": "lowercase"
+                },
+                "amenities.room": {
+                  "default": []
+                },
+                "images.rooms": {
+                  "source": "RoomImages",
+                  "transform": "map",
+                  "mapping": {
+                    "link": "url",
+                    "description": "description"
+                  }
+                },
+                "images.site": {
+                  "default": []
+                },
+                "images.amenities": {
+                  "default": []
+                },
+                "booking_conditions": {
+                  "default": []
+                }
+            }
+        },
+        {
             "name": "sample/sample1.json",
             "url": "https://5f2be0b4ffc88500167b85a0.mockapi.io/suppliers/acme",
             "config": {
