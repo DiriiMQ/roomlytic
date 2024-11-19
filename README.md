@@ -62,3 +62,15 @@ To add new supplier, you can use script `supplier_manager`. Type `./supplier_man
 - **Scalability**: The application is designed to be scalable. It can easily adapt to new suppliers by using the `Adapter` pattern. The `ConfigGenerator` will allow the application to automatically adapt to new suppliers by calling external Large Language Models (LLMs) to generate the configurations for the new suppliers.
 - **Flexibility**: The application is flexible. It can easily adapt to new requirements by changing the strategies in the `HotelDataMerger`, `HotelDataCleaner` and `HotelDataFormatter`.
 - **Maintainability**: The application is easy to maintain. The code is well-structured and easy to understand. The classes are well-separated and follow the Single Responsibility Principle (SRP).
+
+## Future improvements
+
+- **ConfigGenerator**: Implement the `ConfigGenerator` to automatically adapt to new suppliers by calling external Large Language Models (LLMs) to generate the configurations for the new suppliers.
+
+## Replit
+
+[Run on Replit](https://replit.com/@pmquang22/roomlytic)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
