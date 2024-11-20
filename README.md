@@ -36,7 +36,7 @@ chmod +x runner
 - If the hotel_ids or destination_ids are empty, you should pass "none" as the argument.
 - If both hotel_ids and destination_ids are empty, the application will fetch all the data available.
 
-To add new supplier, you can use script `supplier_manager`. Type `./supplier_manager --help` for more information. (This is a temporary solution, and the final version would have a config generator to automatical add new suppliers and its configurations)
+To add new supplier, you can use script `supplier_manager`. Type `./supplier_manager --help` for more information. (This is a temporary solution, and the final version would have a config generator to automatically add new suppliers and its configurations)
 
 Example:
 ```bash
@@ -61,7 +61,7 @@ The sample output is [here](sample/output.json).
 2. Fetch data from the suppliers and transform to a common format with `HotelDataAggregator`. 
 3. Clean data with `HotelDataCleaner` with default strategy.
 4. Save the data to the `output` directory in the JSON format.
-5. Filter and format the data from the query with `HotelDataFormatter`. After filtering, the same hotels are mergered with `HotelDataMerger` with default strategy.
+5. Filter and format the data from the query with `HotelDataFormatter`. After filtering, the same hotels are mergered with `HotelDataMerger` with default strategy by using a hashmap to optimize the complexity when gathering the same `hotel_id`s into an array.
 6. Output the data to the console.
 
 ### Key design patterns
