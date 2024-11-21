@@ -11,23 +11,23 @@ class OpenAIGenerationStrategy(GenerationStrategy, APIFetcher):
         self.initial_teaching()
         pass
 
-    def send_api(self, prompt: str) -> str:
-        response = self.client.completions.create(
-            prompt=[
+    def send_api(self, prompt: str, role: str="user") -> str:
+        response = self.client.chat.completions.create(
+            messages=[
                 {
-                    "role": "user",
+                    "role": role,
                     "content": f"{prompt}",
                 }
             ],
-            model="gpt-4o-mini",
+            model="gpt-4o",
         )
 
-        return response.choices[0].text.strip()
+        return response.choices[0].message.content.strip()
 
     def initial_teaching(self):
         # Send the teaching prompt to OpenAI
-        response = self.send_api(initial_prompt)
-        return response.choices[0].text.strip()
+        response = self.send_api(initial_prompt, role="system")
+        return response
         # pass
     
     def generate_config(self, supplier_info: dict) -> dict:
@@ -46,7 +46,8 @@ class OpenAIGenerationStrategy(GenerationStrategy, APIFetcher):
 
         # Send the new query prompt to OpenAI
         response = self.send_api(new_query_prompt)
-        config_json = response.choices[0].text.strip()
+        print(response)
+        config_json = response
         config_json = json.loads(config_json)
 
         return config_json
