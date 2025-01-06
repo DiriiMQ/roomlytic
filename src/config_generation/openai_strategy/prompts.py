@@ -1,97 +1,126 @@
 initial_prompt = """
-You will transform an input JSON into a fixed goal JSON using specific transformation rules. The goal JSON structure is always the same, but the input JSON can vary. Your task is to generate a configuration JSON that defines how to map and transform fields from the input JSON to the goal JSON.
+You are a helpful API that generates JSON configurations to convert any given JSON data into a specified template structure. When writing these configurations, follow these strict rules:
 
-### Fixed Goal JSON:
-[
-    {
-        "id": "string",
-        "destination_id": "integer",
-        "name": "string",
-        "location": {
-            "lat": "float",
-            "lng": "float",
-            "address": "string",
-            "city": "string",
-            "country": "string"
-        },
-        "description": "string",
-        "amenities": {
-            "general": ["array of strings"],
-            "room": ["array of strings"]
-        },
-        "images": {
-            "rooms": [
-                { "link": "string", "description": "string" }
-            ],
-            "site": [
-                { "link": "string", "description": "string" }
-            ],
-            "amenities": [
-                { "link": "string", "description": "string" }
-            ]
-        },
-        "booking_conditions": ["array of strings"]
-    }
-]
+    - Output JSON Only: Respond with the configuration in valid JSON format without any additional explanation or comments.
+    - Transformation Methods: Use only the following methods:
+        - "map": To map nested structures, using a mapping object that specifies source and target fields. Only using for images.rooms, images.site, and images.amenities.
+        - "template": To construct strings using placeholders {{ }} for the source fields.
+        - "lowercase": To convert an array of strings to lowercase when mapping to the template.
+    - Defaults: If a target field does not exist in the input, assign a "default" value based on the expected type (empty string or array).
+    - Hierarchical Keys: Use dot notation (e.g., "location.lat") to map nested structures.
+    - Consistency: Follow the structure of the example provided, ensuring the mappings and transformations align with the intended output.
 
-### Transformation Rules:
-1. **Direct Mapping**: Directly map a field from the input JSON to the goal JSON.
-2. **Nested Mapping**: Map fields to nested fields in the goal JSON.
-3. **Default Values**: Assign default values to fields not present in the input JSON.
-4. **List Transformation**: Transform lists (e.g., lowercase, capitalize).
-5. **Mapping Transformation**: Map lists of objects, renaming fields as necessary.
-6. **Template Description**: Use templates to construct strings by combining multiple fields.
+Use the following example to guide the formatting and logic:
 
-### Example Input JSON:
-[
-    {
-        "id": "iJhz",
-        "destination": 5432,
-        "name": "Beach Villas Singapore",
-        "lat": 1.264751,
-        "lng": 103.824006,
-        "address": "8 Sentosa Gateway, Beach Villas, 098269",
-        "info": "Located at the western tip of Resorts World Sentosa...",
-        "amenities": ["Aircon", "Tv", "Coffee machine", "Kettle"],
-        "images": {
-            "rooms": [
-                { "url": "https://example.com/room1.jpg", "description": "Room 1" }
-            ],
-            "amenities": [
-                { "url": "https://example.com/amenity1.jpg", "description": "Amenity 1" }
-            ]
-        }
-    }
-]
+Example Input JSON:
 
-### Example Configuration JSON:
 {
-    "id": "id",
-    "destination_id": "destination",
-    "name": "name",
-    "location.lat": "lat",
-    "location.lng": "lng",
-    "location.address": "address",
-    "location.city": { "default": "Singapore" },
-    "location.country": { "default": "Singapore" },
-    "description": { "template": "{name} is located in {location[city]}, {location[country]}" },
-    "amenities.general": { "default": [] },
-    "amenities.room": { "source": "amenities", "transform": "lowercase" },
-    "images.rooms": {
-        "source": "images.rooms",
-        "transform": "map",
-        "mapping": { "link": "url", "description": "description" }
+  "Id": "iJhz",
+  "DestinationId": 5432,
+  "Name": "Beach Villas Singapore",
+  "Latitude": 1.264751,
+  "Longitude": 103.824006,
+  "Address": "8 Sentosa Gateway, Beach Villas",
+  "City": "Singapore",
+  "Country": "Singapore",
+  "PostalCode": "098269",
+  "Description": "This 5 star hotel is located on the coastline of Singapore.",
+  "Facilities": ["Pool", "BusinessCenter", "WiFi", "DryCleaning", "Breakfast"],
+  "RoomImages": [
+    {
+      "url": "https://example.com/room1.jpg",
+      "description": "Spacious double room"
     },
-    "images.site": { "default": [] },
-    "images.amenities": {
-        "source": "images.amenities",
-        "transform": "map",
-        "mapping": { "link": "url", "description": "description" }
-    },
-    "booking_conditions": { "default": [] }
+    {
+      "url": "https://example.com/room2.jpg",
+      "description": "Room with ocean view"
+    }
+  ]
 }
 
-From now on, given a new input JSON, generate only the configuration JSON required to transform the input into the fixed goal JSON using the rules described above.
+Example Output Template JSON:
+
+{
+  "id": "iJhz",
+  "destination_id": "5432",
+  "name": "Beach Villas Singapore",
+  "location": {
+    "lat": 1.264751,
+    "lng": 103.824006,
+    "address": "8 Sentosa Gateway, Beach Villas, 098269",
+    "city": "Singapore",
+    "country": "Singapore"
+  },
+  "description": "This 5 star hotel is located on the coastline of Singapore.",
+  "amenities": {
+    "general": [
+      "pool",
+      "business center",
+      "wifi",
+      "dry cleaning",
+      "breakfast"
+    ],
+    "room": []
+  },
+  "images": {
+    "rooms": [
+      {
+        "link": "https://example.com/room1.jpg",
+        "description": "Spacious double room"
+      },
+      {
+        "link": "https://example.com/room2.jpg",
+        "description": "Room with ocean view"
+      }
+    ],
+    "site": [],
+    "amenities": []
+  },
+  "booking_conditions": []
+}
+
+Example Output Configuration JSON:
+
+{
+  "id": "Id",
+  "destination_id": "DestinationId",
+  "name": "Name",
+  "location.lat": "Latitude",
+  "location.lng": "Longitude",
+  "location.address": {
+    "template": "{{Address}}, {{PostalCode}}"
+  },
+  "location.city": "City",
+  "location.country": "Country",
+  "description": "Description",
+  "amenities.general": {
+    "source": "Facilities",
+    "transform": "lowercase"
+  },
+  "amenities.room": {
+    "default": []
+  },
+  "images.rooms": {
+    "source": "RoomImages",
+    "transform": "map",
+    "mapping": {
+      "link": "url",
+      "description": "description"
+    }
+  },
+  "images.site": {
+    "default": []
+  },
+  "images.amenities": {
+    "default": []
+  },
+  "booking_conditions": {
+    "default": []
+  }
+}
+
+Your Task:
+Generate similar JSON configurations for any given input JSON data to match the requested template structure, adhering to these rules.
 """
 
 new_input_json = """
@@ -119,8 +148,5 @@ new_input_json = """
 
 # Prompt for new transformation configuration
 new_query_prompt = """
-Generate the configuration JSON to transform the following input JSON into the fixed goal JSON:
-
-Input JSON:
 {0}
 """

@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# Load .env
+if [ -f .env ]; then
+    export $(cat .env | sed 's/#.*//g' | xargs)
+fi
+
 # Function to display help message
 show_help() {
     echo "Usage: $0 [--add-supplier path/to/new_supplier.json | --remove-supplier]"
@@ -24,4 +29,4 @@ if [ "$#" -eq 0 ]; then
 fi
 
 # Run the Python script with the provided arguments
-python3 src/utils/suppliers_manager.py "$@"
+python3 suppliers_manager.py "$@"

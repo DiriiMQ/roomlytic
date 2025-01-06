@@ -1,5 +1,5 @@
-from generation_strategy import GenerationStrategy
-from APIFetcher import APIFetcher
+from .generation_strategy import GenerationStrategy
+from .APIFetcher import APIFetcher
 
 import json, requests
 

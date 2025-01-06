@@ -3,6 +3,9 @@ import json
 import os
 import shutil
 from datetime import datetime
+from src.config_generation.config_generator import ConfigGenerator
+from src.config_generation.default_generation_strategy import DefaultGenerationStrategy
+from src.config_generation.openai_generation_strategy import OpenAIGenerationStrategy
 
 SUPPLIERS_CONFIG_FILE = "src/configs/suppliers.config.json"
 BACKUP_FOLDER = "backup"
@@ -61,10 +64,27 @@ def remove_supplier():
     save_suppliers(suppliers)
     print(f"Supplier {removed_supplier['name']} removed successfully.")
 
+def generate_config(supplier_info, is_openai=False):
+    if is_openai:
+        strategy = OpenAIGenerationStrategy()
+    else:
+        strategy = DefaultGenerationStrategy()
+
+    config = strategy.generate_config(supplier_info)
+    return config
+
 def main():
     parser = argparse.ArgumentParser(description="Manage suppliers.")
     parser.add_argument("--add-supplier", type=str, help="Add a new supplier from a JSON file")
     parser.add_argument("--remove-supplier", action="store_true", help="Remove an existing supplier")
+    
+    # add --generate-config argument to input supplier name, and url and set llm to true or false then call generate_config function
+    # add --openai argument to call generate_config function with is_openai=True
+    # add --llm argument to call generate_config function with is_openai=False
+
+    parser.add_argument("--generate-config", type=str, help="Generate config for a supplier")
+    parser.add_argument("--openai", action="store_true", help="Generate config using OpenAI")
+    parser.add_argument("--llm", action="store_true", help="Generate config using LLM")
 
     args = parser.parse_args()
 
@@ -72,6 +92,13 @@ def main():
         add_supplier(args.add_supplier)
     elif args.remove_supplier:
         remove_supplier()
+    elif args.generate_config:
+        supplier_info = {
+            "name": args.generate_config,
+            "url": input("Enter the URL of the supplier: ")
+        }
+        config = generate_config(supplier_info, is_openai=args.openai)
+        print(json.dumps(config, indent=2))
     else:
         parser.print_help()
 

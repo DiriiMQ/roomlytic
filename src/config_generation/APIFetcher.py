@@ -1,16 +1,23 @@
-import requests
+import requests, json
 
 class APIFetcher:
     def __init__(self):
         pass
 
     def fetch_api(self, url: str) -> dict:
-        """ Fetch data from the API """
-        try:
-            response = requests.get(url)
-            return response.json()
-        except Exception as e:
-            raise f"Error fetching data from API: {e}"
+        if url.startswith("http"):
+            """ Fetch data from the API """
+            try:
+                response = requests.get(url)
+                return response.json()
+            except Exception as e:
+                raise f"Error fetching data from API: {e}"
+        else: # Assume it's a local file
+            try:
+                with open(url, 'r') as f:
+                    return json.load(f)
+            except Exception as e:
+                raise f"Error reading data from file: {e}"
         
     def get_keys(self, data: dict, prefix: str = "") -> list[str]:
         keys = []
