@@ -12,6 +12,8 @@ show_help() {
     echo "Options:"
     echo "  --add-supplier path/to/new_supplier.json  Add a new supplier from a JSON file"
     echo "  --remove-supplier                        Remove an existing supplier"
+    echo "  --generate-config supplier_name          Generate config for a supplier"
+    echo "  --openai                                 Generate config using OpenAI"
     echo "  --help                                   Show this help message and exit"
 }
 

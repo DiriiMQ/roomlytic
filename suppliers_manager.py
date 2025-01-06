@@ -98,7 +98,8 @@ def main():
             "url": input("Enter the URL of the supplier: ")
         }
         config = generate_config(supplier_info, is_openai=args.openai)
-        print(json.dumps(config, indent=2))
+        supplier_info["config"] = config
+        print(json.dumps(supplier_info, indent=2))
     else:
         parser.print_help()
 
