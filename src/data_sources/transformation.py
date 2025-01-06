@@ -1,7 +1,9 @@
 from .transform_factory import TransformationFactory
 from .transformation_strategies import TemplateTransformation, DefaultTransformation
 
-import json
+import json, logging
+
+logging.basicConfig(level=logging.INFO)
 
 class Transformation:
     def get_nested_value(self, data, key_path):
@@ -18,6 +20,27 @@ class Transformation:
             data = data.setdefault(key, {})
         data[keys[-1]] = value
 
+    def extract_source_field(self, item, source_field, target_field):
+        if "template" in source_field:
+            value = TemplateTransformation().transform(item, source_field)
+        elif "default" in source_field:
+            value = DefaultTransformation().transform(item, source_field)
+        elif "source" in source_field:
+            source_value = self.get_nested_value(item, source_field["source"])
+            
+            transform_type = source_field.get("transform")
+            if transform_type:
+                strategy = TransformationFactory.get_transformation(transform_type)()
+                # print(strategy)
+                value = strategy.transform(source_value, source_field)
+            else:
+                value = source_value
+        else:
+            value = None
+            raise ValueError(f"Invalid transformation configuration for field {target_field}")
+        
+        return value
+
     def transform_json_with_config(self, source_json, config):
         transformed_data = []
         
@@ -32,20 +55,13 @@ class Transformation:
                 
                 elif isinstance(source_field, dict):
                     # Handle templates, defaults, or transformations
-                    if "template" in source_field:
-                        value = TemplateTransformation().transform(item, source_field)
-                    elif "default" in source_field:
-                        value = DefaultTransformation().transform(item, source_field)
-                    elif "source" in source_field:
-                        source_value = self.get_nested_value(item, source_field["source"])
-                        
-                        transform_type = source_field.get("transform")
-                        if transform_type:
-                            strategy = TransformationFactory.get_transformation(transform_type)()
-                            # print(strategy)
-                            value = strategy.transform(source_value, source_field)
-                        else:
-                            value = source_value
+                    value = None
+
+                    try:
+                        value = self.extract_source_field(item, source_field, target_field)
+                        self.set_nested_value(transformed_item, target_field, value)
+                    except Exception as e:
+                        logging.error(f"Error processing field {target_field}: {e}")
 
                     self.set_nested_value(transformed_item, target_field, value)
             

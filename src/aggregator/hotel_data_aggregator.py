@@ -29,6 +29,7 @@ class HotelDataAggregator:
         self.all_data = []
         for supplier, url in self.suppliers:
             transformed_data = self.data_source.fetch_data(supplier, transformer=self.transformer)
+                # transformed_data = []
             supplier_data = Supplier(supplier, url, transformed_data)
             self.all_data.append(supplier_data)
         
