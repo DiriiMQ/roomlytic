@@ -36,7 +36,7 @@ chmod +x runner
 - If the hotel_ids or destination_ids are empty, you should pass "none" as the argument.
 - If both hotel_ids and destination_ids are empty, the application will fetch all the data available.
 
-To add new supplier, you can use script `supplier_manager`. Type `./supplier_manager --help` for more information. (This is a temporary solution, and the final version would have a config generator to automatically add new suppliers and its configurations)
+To add new supplier or generate a config for the new supplier, you can use script `supplier_manager`. Type `./supplier_manager --help` for more information. (This is a temporary solution, and the final version would have a config generator to automatically add new suppliers and its configurations)
 
 Example:
 ```bash
