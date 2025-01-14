@@ -3,8 +3,9 @@ import requests
 
 from src.data_sources.transformation import Transformation
 from src.models.hotel_data_model import Hotel
+from src.config_generation.APIFetcher import APIFetcher
 
-class DataSource:
+class DataSource(APIFetcher):
     def __init__(self, config_file="src/configs/suppliers.config.json"):
         with open(config_file) as f:
             self.config = json.load(f)
@@ -12,16 +13,16 @@ class DataSource:
         # print(self.config)
         # print("Data source initialized.")
 
-    def fetch_url(self, url):
-        # response = requests.get(url)
-        # return response.json()
-        if url.startswith("http"):
-            response = requests.get(url)
-            return response.json()
-        # url is the path to a json file (temporary)
-        else:
-            with open(url) as f:
-                return json.load(f)
+    # def fetch_url(self, url):
+    #     # response = requests.get(url)
+    #     # return response.json()
+    #     if url.startswith("http"):
+    #         response = requests.get(url) 
+    #         return response.json()
+    #     # url is the path to a json file (temporary)
+    #     else:
+    #         with open(url) as f:
+    #             return json.load(f)
 
     def fetch_data(self, supplier_name: str, transformer: Transformation) -> list:
         supplier_config = next((supplier for supplier in self.config["suppliers"] if supplier["name"] == supplier_name), None)
@@ -31,7 +32,7 @@ class DataSource:
         url = supplier_config['url']
         field_mappings = { 'config': supplier_config.get('config', {}) }
         
-        response = self.fetch_url(url)
+        response = self.fetch_api(url)
         data = response
         # print(f"Data: {data}")
         # print(f"Field mappings: {field_mappings}")

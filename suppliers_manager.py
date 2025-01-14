@@ -65,10 +65,9 @@ def remove_supplier():
     print(f"Supplier {removed_supplier['name']} removed successfully.")
 
 def generate_config(supplier_info, is_openai=False):
+    strategy = ConfigGenerator()
     if is_openai:
-        strategy = OpenAIGenerationStrategy()
-    else:
-        strategy = DefaultGenerationStrategy()
+        strategy = ConfigGenerator(OpenAIGenerationStrategy)
 
     config = strategy.generate_config(supplier_info)
     return config

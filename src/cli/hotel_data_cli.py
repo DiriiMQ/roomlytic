@@ -15,6 +15,7 @@ class HotelDataCLI:
         self.suppliers = []
 
     def get_hotels(self, hotel_ids: list[str], destination_ids: list[str]) -> list[Hotel]:
+
         formatted_data = self.formatter.filter_and_format(self.suppliers, hotel_ids, destination_ids)
         return formatted_data
     
@@ -22,6 +23,8 @@ class HotelDataCLI:
         return [hotel._export_dict() for hotel in hotels]
 
     def run(self, hotel_ids: list[str], destination_ids: list[str]) -> list[Hotel]:
+        # middleware functions
+
         self.suppliers = self.aggregator.aggregate_data()
         self.suppliers = self.cleaner.clean_all_suppliers(self.suppliers)
 
@@ -35,6 +38,7 @@ class HotelDataCLI:
         # for supplier in self.suppliers:
         #     print(json.dumps(supplier._export_dict(), indent=2))
 
+        # Limit
         uniq_hotels = self.get_hotels(hotel_ids, destination_ids)
 
         # print(f"Total suppliers: {len(self.suppliers)}")
