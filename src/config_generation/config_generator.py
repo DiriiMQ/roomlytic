@@ -1,5 +1,6 @@
-from generation_strategy import GenerationStrategy
-from default_generation_strategy import DefaultGenerationStrategy
+from .generation_strategy import GenerationStrategy
+from .openai_generation_strategy import OpenAIGenerationStrategy
+from .default_generation_strategy import DefaultGenerationStrategy
 
 class ConfigGenerator:
     def __init__(self, generation_strategy: GenerationStrategy = DefaultGenerationStrategy):

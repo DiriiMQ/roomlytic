@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# Load .env
+if [ -f .env ]; then
+    export $(cat .env | sed 's/#.*//g' | xargs)
+fi
+
 # Function to display help message
 show_help() {
     echo "Usage: $0 [--add-supplier path/to/new_supplier.json | --remove-supplier]"
@@ -7,6 +12,8 @@ show_help() {
     echo "Options:"
     echo "  --add-supplier path/to/new_supplier.json  Add a new supplier from a JSON file"
     echo "  --remove-supplier                        Remove an existing supplier"
+    echo "  --generate-config supplier_name          Generate config for a supplier"
+    echo "  --openai                                 Generate config using OpenAI"
     echo "  --help                                   Show this help message and exit"
 }
 
@@ -24,4 +31,4 @@ if [ "$#" -eq 0 ]; then
 fi
 
 # Run the Python script with the provided arguments
-python3 src/utils/suppliers_manager.py "$@"
+python3 suppliers_manager.py "$@"

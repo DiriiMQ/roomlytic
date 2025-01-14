@@ -47,3 +47,63 @@ def filter_more_general_term(terms: list[str]) -> list[str]:
             filtered_terms.append(term)
 
     return filtered_terms
+
+def jaro_distance(s1, s2):
+    # Step 1: Calculate matching characters
+    len1, len2 = len(s1), len(s2)
+    if len1 == 0:
+        return 0.0
+    match_window = max(len1, len2) // 2 - 1
+
+    # Create a boolean array to mark matched characters
+    matched1 = [False] * len1
+    matched2 = [False] * len2
+    matches = 0
+
+    for i in range(len1):
+        start = max(0, i - match_window)
+        end = min(len2, i + match_window + 1)
+        for j in range(start, end):
+            if s1[i] == s2[j] and not matched2[j]:
+                matched1[i] = True
+                matched2[j] = True
+                matches += 1
+                break
+
+    # If no matches, return 0
+    if matches == 0:
+        return 0.0
+
+    # Step 2: Calculate transpositions
+    t = 0
+    k = 0
+    for i in range(len1):
+        if matched1[i]:
+            while not matched2[k]:
+                k += 1
+            if s1[i] != s2[k]:
+                t += 1
+            k += 1
+    t /= 2
+
+    # Step 3: Calculate Jaro distance
+    jaro_dist = (matches / len1 + matches / len2 + (matches - t) / matches) / 3
+    return jaro_dist
+
+def jaro_winkler_distance(s1, s2, p=0.1, l=4):
+    # Step 1: Calculate Jaro distance
+    jaro_dist = jaro_distance(s1, s2)
+    
+    # Step 2: Apply the Winkler adjustment
+    # Count common prefix (max 4 characters)
+    prefix_len = 0
+    for i in range(min(len(s1), len(s2), l)):
+        if s1[i] == s2[i]:
+            prefix_len += 1
+        else:
+            break
+    
+    # Adjust the Jaro distance with the Winkler correction
+    jaro_winkler_dist = jaro_dist + (p * prefix_len * (1 - jaro_dist))
+    
+    return jaro_winkler_dist
