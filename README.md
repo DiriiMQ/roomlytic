@@ -75,6 +75,7 @@ The sample output is [here](sample/output.json).
 - **Scalability**: The application is designed to be scalable. It can easily adapt to new suppliers by using the `Adapter` pattern. The `ConfigGenerator` will allow the application to automatically adapt to new suppliers by calling external Large Language Models (LLMs) to generate the configurations for the new suppliers.
 - **Flexibility**: The application is flexible. It can easily adapt to new requirements by changing the strategies in the `HotelDataMerger`, `HotelDataCleaner` and `HotelDataFormatter`.
 - **Maintainability**: The application is easy to maintain. The code is well-structured and easy to understand. The classes are well-separated and follow the Single Responsibility Principle (SRP).
+- **Performance**: The application is optimized for performance with Data Structure and Algorithm. The `HotelDataMerger` uses a hashmap to optimize the complexity when gathering the same `hotel_id`s into an array.
 
 ## Future improvements
 
